@@ -1,0 +1,32 @@
+- name: Mirotik Playbook
+  hosts: all
+  connection: network_cli
+  gather_facts: false
+
+  tasks:
+    - name: Get OS Version
+      routeros_command:
+        commands: 
+          - /system resource print
+      register: resource_result
+
+    - name: Get system identity
+      community.routeros.command:
+        commands:
+          - /system identity print
+      register: identity_result
+    
+
+#    - name: Display results
+#      debug: 
+##        var: identity_result.stdout_lines
+#        msg:
+#          - "{{ resource_result.stdout_lines }}"
+#          - "{{ identity_result.stdout_lines }}"
+
+    - name: Display results
+      debug:
+        msg:
+          - "=== {{ inventory_hostname }} ==="
+          - "Identity: {{ identity_result.stdout_lines[0] }}"
+          - "Resource: {{ resource_result.stdout_lines[0] }}"
