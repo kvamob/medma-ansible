@@ -15,18 +15,29 @@
         commands:
           - /system identity print
       register: identity_result
-    
 
-#    - name: Display results
-#      debug: 
-##        var: identity_result.stdout_lines
-#        msg:
-#          - "{{ resource_result.stdout_lines }}"
-#          - "{{ identity_result.stdout_lines }}"
+#    - name: Get interface list
+#      community.routeros.command:
+#        commands:
+#          - /interface print
+#      register: interface_result
+#      vars: 
+#        ansible_command_timeout: 180
+
 
     - name: Display results
-      debug:
+      debug: 
+#        var: identity_result.stdout_lines
         msg:
           - "=== {{ inventory_hostname }} ==="
-          - "Identity: {{ identity_result.stdout_lines[0] }}"
-          - "Resource: {{ resource_result.stdout_lines[0] }}"
+          - "{{ identity_result.stdout_lines }}"
+          - "{{ resource_result.stdout_lines }}"
+#          - "{{ interface_result.stdout_lines }}"
+
+#    - name: Display results
+#      debug:
+#        msg:
+#          - "=== {{ inventory_hostname }} ==="
+#          - "Identity: {{ identity_result.stdout_lines[0] }}"
+#          - "Resource: {{ resource_result.stdout_lines[0] }}"
+#          - "Interfaces: {{ interface_result.stdout_lines[0] }}"
