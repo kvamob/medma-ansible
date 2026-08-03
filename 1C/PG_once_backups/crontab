@@ -1,0 +1,5 @@
+00 03 * * * /var/backups/PG_once_backups/restart_1c.sh
+
+30 3 * * * /var/backups/PG_once_backups/cleanup_1c_log.sh
+
+* 4 * * * /var/backups/PG_once_backups/pg_once_backup.sh
