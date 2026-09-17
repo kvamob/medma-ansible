@@ -1,4 +1,4 @@
-- name: Mirotik Playbook
+- name: Gathering info from router
   hosts: all
   connection: network_cli
   gather_facts: false
@@ -27,17 +27,9 @@
 
     - name: Display results
       debug: 
-#        var: identity_result.stdout_lines
         msg:
           - "=== {{ inventory_hostname }} ==="
           - "{{ identity_result.stdout_lines }}"
           - "{{ resource_result.stdout_lines }}"
 #          - "{{ interface_result.stdout_lines }}"
 
-#    - name: Display results
-#      debug:
-#        msg:
-#          - "=== {{ inventory_hostname }} ==="
-#          - "Identity: {{ identity_result.stdout_lines[0] }}"
-#          - "Resource: {{ resource_result.stdout_lines[0] }}"
-#          - "Interfaces: {{ interface_result.stdout_lines[0] }}"

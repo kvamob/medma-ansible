@@ -1,0 +1,21 @@
+- name: Upload file to router
+#  hosts: 10.48.0.1
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: file 1 upload
+      net_put:
+        src: ./files/UpdateRouterOS.txt
+        dest: ./UpdateRouterOS.txt
+        protocol: sftp
+    - name: file 2 upload
+      net_put:
+        src: ./files/UpgradeFirmware.txt
+        dest: ./UpgradeFirmware.txt
+        protocol: sftp
+    - name: File demonstate after
+      routeros_command:
+        commands: /file print
+      register: file_after
+    - name: debug print after
+      debug: var=file_after.stdout_lines

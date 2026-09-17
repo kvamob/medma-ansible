@@ -1,0 +1,20 @@
+#################
+#UpgradeFirmware
+#################
+
+:log warning "Checking new firmware...";
+
+:local currver [/system routerboard get current-firmware];
+:local upgrver [/system routerboard get upgrade-firmware];
+
+:log info "current-firmware: $currver"
+:log info "upgrade-firmware: $upgrver"
+
+:if ( $currver = $upgrver ) do={ 
+   :log warning "Installed last firmware version, skip upgrading";
+} else={
+   :log warning "Attention! New version of firmware is available!";
+   :delay 2s;
+   /system routerboard upgrade;
+   /system reboot;
+}

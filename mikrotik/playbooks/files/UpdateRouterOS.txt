@@ -1,0 +1,19 @@
+#################
+# UpdateRouterOS
+#################
+
+:log warning "Checking new version RouterOS...";
+/system package update
+check-for-updates once
+:delay 5s;
+:if ( [get status] = "System is already up to date") do={ 
+:log warning "Installed last RouterOS version, skip upgrading";
+}
+:if ( [get status] = "New version is available") do={ 
+   :log warning "Attention! New version of RouterOS is available!";
+   :delay 2s;
+   /system package update download;
+   :delay 10s;
+   /system package update install;
+   :log warning "Updated!!!";
+}
