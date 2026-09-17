@@ -1,6 +1,25 @@
-#################
+###################
 # UpdateRouterOS
-#################
+###################
+
+# Checking the UpgradeAllowed file
+# If it exists, updates are allowed
+
+:local fileName "UpgradeAllowed";
+:local UpgradeAllowed;
+
+:if ([:len [/file find name=$fileName]] > 0) do={
+  :set $UpgradeAllowed "yes";
+} else={
+  :set $UpgradeAllowed "no";
+}
+
+
+:log info "UpgradeAllowed: $UpgradeAllowed";
+
+:if ( $UpgradeAllowed = "no" ) do={ 
+  :error "Update not allowed!!!";
+}
 
 :log warning "Checking new version RouterOS...";
 /system package update

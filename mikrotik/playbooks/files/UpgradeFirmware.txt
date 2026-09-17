@@ -1,14 +1,31 @@
-#################
-#UpgradeFirmware
-#################
+###################
+# UpgradeFirmware
+###################
+
+# Checking the UpgradeAllowed file
+# If it exists, updates are allowed
+:local fileName "UpgradeAllowed";
+:local UpgradeAllowed;
+
+:if ([:len [/file find name=$fileName]] > 0) do={
+  :set $UpgradeAllowed "yes";
+} else={
+  :set $UpgradeAllowed "no";
+}
+
+:log info "UpgradeAllowed: $UpgradeAllowed"
+
+:if ( $UpgradeAllowed = "no" ) do={ 
+  :error "Upgrade not allowed!!!";
+}
 
 :log warning "Checking new firmware...";
 
 :local currver [/system routerboard get current-firmware];
 :local upgrver [/system routerboard get upgrade-firmware];
 
-:log info "current-firmware: $currver"
-:log info "upgrade-firmware: $upgrver"
+:log info "current-firmware: $currver";
+:log info "upgrade-firmware: $upgrver";
 
 :if ( $currver = $upgrver ) do={ 
    :log warning "Installed last firmware version, skip upgrading";

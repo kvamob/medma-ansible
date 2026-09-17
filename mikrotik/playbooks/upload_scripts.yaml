@@ -1,6 +1,6 @@
 - name: Upload file to router
-#  hosts: 10.48.0.1
-  hosts: all
+  hosts: 10.22.3.1
+#  hosts: all
   gather_facts: false
   tasks:
     - name: file 1 upload
@@ -13,6 +13,16 @@
         src: ./files/UpgradeFirmware.txt
         dest: ./UpgradeFirmware.txt
         protocol: sftp
+    - name: file 3 upload
+      net_put:
+        src: ./files/UpgradeAllowed
+        dest: ./UpgradeAllowed
+        protocol: sftp
+    - name: Create scripts
+      routeros_command:
+        commands: 
+          - /system script add name=UpdateRouterOS source=[/file get UpdateRouterOS.txt contents]
+          - /system script add name=UpgradeFirmware source=[/file get UpgradeFirmware.txt contents]
     - name: File demonstate after
       routeros_command:
         commands: /file print
