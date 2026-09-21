@@ -1,6 +1,5 @@
 - name: Upload file to router
-  hosts: 10.196.3.250
-#  hosts: all
+  hosts: kras15
   gather_facts: false
   tasks:
     - name: file UpdateRouterOS.txt upload

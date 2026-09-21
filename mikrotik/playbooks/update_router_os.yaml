@@ -1,0 +1,12 @@
+- name: Update RouterOS
+  hosts: kras15
+  gather_facts: false
+  tasks:
+    - name: UpdateRouterOS
+      routeros_command:
+        commands: 
+          - /system package update download
+          - /system package update install
+      register: update_status
+    - name: debug print status
+      debug: var=update_status.stdout_lines

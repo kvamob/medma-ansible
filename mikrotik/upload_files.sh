@@ -1,3 +1,3 @@
 #!/bin/sh
 
-ansible-playbook -i hosts.ini ./playbooks/upload_scripts.yaml
+ansible-playbook -i ./inventory/mikrotik.ini ./playbooks/upload_scripts.yaml

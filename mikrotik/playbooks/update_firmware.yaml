@@ -1,0 +1,12 @@
+- name: Update RouterOS
+  hosts: kras15
+  gather_facts: false
+  tasks:
+    - name: UpgradeFirmware
+      routeros_command:
+        commands:
+          - ":execute {/system routerboard upgrade;delay 1;quit}"
+          - ":execute {/system reboot;delay 1;quit}"
+#      register: update_status
+#    - name: debug print status
+#      debug: var=update_status.stdout_lines
