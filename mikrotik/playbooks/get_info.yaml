@@ -1,0 +1,23 @@
+- name: Write kernel version to file
+  hosts: all
+  gather_facts: false
+  vars:
+    logfile: "/tmp/mikrotiks_log"
+    loghost: "localhost"
+  tasks:
+    - name: Gather facts
+      timeout: 120
+      community.routeros.facts:
+        gather_subset:
+          - default
+          - hardware
+    - name: Write info to file
+      lineinfile:
+        create: true
+        state: present
+        path: "{{ logfile }}"
+        line: '{{inventory_hostname}};{{ ansible_facts["net_hostname"] }};{{ansible_facts["net_model"]}};{{ ansible_facts["net_version"] }};'
+#        line: '{{inventory_hostname}} {{ ansible_facts["net_hostname"] }} {{ansible_facts["net_model"]}} {{ ansible_facts["net_version"] }}'
+#        regexp: '^{{ ansible_facts["net_hostname"] }}[[:space:]].*'
+        regexp: '^{{ ansible_facts["net_hostname"] }}[[;]].*'
+      delegate_to: "{{ loghost }}"

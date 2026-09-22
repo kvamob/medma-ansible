@@ -1,6 +1,9 @@
 - name: Upload file to router
-  hosts: kazan
-#  hosts: 10.196.0.242
+  hosts: 
+  -  kazan
+  -  kras13
+  -  kras15
+  -  tomsk
   gather_facts: false
   tasks:
     - name: file UpdateRouterOS.txt upload
@@ -26,11 +29,11 @@
     - name: Create tasks in Scheduler
       routeros_command:
         commands: 
-          - /system scheduler add name="daily_UpdateRouterOS"  start-time=03:00 interval=1d on-event="UpdateRouterOS"
-          - /system scheduler add name="daily_UpgradeFirmware" start-time=03:30 interval=1d on-event="UpgradeFirmware"
-    - name: File list after
-      routeros_command:
-        commands: /file print
-      register: file_after
-    - name: debug print after
-      debug: var=file_after.stdout_lines
+          - /system scheduler add name="daily_UpdateRouterOS"  start-time=03:00:00 interval=1d on-event="UpdateRouterOS"
+          - /system scheduler add name="daily_UpgradeFirmware" start-time=03:30:00 interval=1d on-event="UpgradeFirmware"
+#    - name: File list after
+#      routeros_command:
+#        commands: /file print
+#      register: file_after
+#    - name: debug print after
+#      debug: var=file_after.stdout_lines
