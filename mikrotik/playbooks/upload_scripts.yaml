@@ -1,9 +1,6 @@
 - name: Upload file to router
   hosts: 
-  -  kazan
-  -  kras13
-  -  kras15
-  -  tomsk
+  -  routers1
   gather_facts: false
   tasks:
     - name: file UpdateRouterOS.txt upload

@@ -1,5 +1,5 @@
 - name: Update RouterOS
-  hosts: kras15
+  hosts: routers1
   gather_facts: false
   tasks:
     - name: UpgradeFirmware

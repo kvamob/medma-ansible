@@ -17,7 +17,7 @@
         state: present
         path: "{{ logfile }}"
         line: '{{inventory_hostname}};{{ ansible_facts["net_hostname"] }};{{ansible_facts["net_model"]}};{{ ansible_facts["net_version"] }};'
+        regexp: '^{{ ansible_facts["net_hostname"] }}[[;]].*'
 #        line: '{{inventory_hostname}} {{ ansible_facts["net_hostname"] }} {{ansible_facts["net_model"]}} {{ ansible_facts["net_version"] }}'
 #        regexp: '^{{ ansible_facts["net_hostname"] }}[[:space:]].*'
-        regexp: '^{{ ansible_facts["net_hostname"] }}[[;]].*'
       delegate_to: "{{ loghost }}"
