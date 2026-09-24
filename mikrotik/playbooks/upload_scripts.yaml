@@ -1,6 +1,6 @@
 - name: Upload file to router
   hosts: 
-  -  routers1
+    - routers2
   gather_facts: false
   tasks:
     - name: file UpdateRouterOS.txt upload

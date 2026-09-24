@@ -1,5 +1,6 @@
 - name: Gathering info from router
-  hosts: kras15
+  hosts:
+    - routers1
   connection: network_cli
   gather_facts: false
 

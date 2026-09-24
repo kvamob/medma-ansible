@@ -1,0 +1,18 @@
+- name: Download files from MikroTik RouterOS
+  hosts:
+    - 10.48.0.1
+  gather_facts: false
+  tasks:
+    - name: Create backup and config files on MikroTik device
+      community.routeros.command:
+        commands:
+          - /system backup save name=curr_backup
+          - /export file=curr_config
+    - name: Fetch backup file from RouterOS to Ansible controller
+      ansible.netcommon.net_get:
+        src: "curr_backup.backup"
+        dest: "./backups/{{ inventory_hostname }}_curr.backup"
+    - name: Fetch config file from RouterOS to Ansible controller
+      ansible.netcommon.net_get:
+        src: "curr_config.rsc"
+        dest: "./backups/{{ inventory_hostname }}_curr.config"

@@ -1,5 +1,6 @@
 - name: Write kernel version to file
-  hosts: all
+  hosts:
+    - routers1
   gather_facts: false
   vars:
     logfile: "/tmp/mikrotiks_log"
