@@ -1,6 +1,7 @@
 - name: Upload file to router
   hosts: 
-    - routers2
+#    - CAPsMANs
+    - 10.196.105.253
   gather_facts: false
   tasks:
     - name: file UpdateRouterOS.txt upload

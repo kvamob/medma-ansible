@@ -9,8 +9,11 @@
     loghost: "localhost"
   tasks:
     - name: Gather facts
-#      timeout: 120
-      community.routeros.facts:
+      community.routeros.api_facts:
+        hostname: "{{ inventory_hostname }}"
+        password: "{{ ansible_password }}"
+        username: "{{ ansible_user }}"
+        timeout: 60
         gather_subset:
           - default
           - hardware
