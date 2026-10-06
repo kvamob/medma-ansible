@@ -1,7 +1,10 @@
 - name: Write kernel version to file
   hosts:
-    - routers1
-    - routers2
+#    - routers1
+#    - routers2
+#    - CAPsMANs
+    - switches1
+    - switches2
 #    - 10.50.4.1
   gather_facts: false
   vars:

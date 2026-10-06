@@ -1,0 +1,59 @@
+- name: Set clock on devices
+  hosts: all
+#    - 10.50.4.1    
+#    - 10.196.0.236
+#    - 10.201.0.1
+#    - routers1
+#    - routers2
+
+  gather_facts: false
+
+  tasks:
+
+    - name: Gather facts
+      community.routeros.api_facts:
+        hostname: "{{ inventory_hostname }}"
+        password: "{{ ansible_password }}"
+        username: "{{ ansible_user }}"
+        timeout: 60
+        gather_subset:
+          - default
+
+#    - name: Print data
+#      ansible.builtin.debug:
+#        var: ansible_facts["net_version"]
+
+    - name: Setting up ntp client (RouterOS 6.x)
+      community.routeros.api_modify:
+        hostname: "{{ inventory_hostname }}"
+        password: "{{ ansible_password }}"
+        username: "{{ ansible_user }}"
+        path: "system ntp client"
+        data:
+          - enabled: yes
+            primary-ntp: 82.146.42.44
+            secondary-ntp: 93.191.12.44
+      when: ansible_facts["net_version"] is version('7.0', '<')
+
+    - name: Setting up ntp client (RouterOS 7.x)
+      community.routeros.api_modify:
+        hostname: "{{ inventory_hostname }}"
+        password: "{{ ansible_password }}"
+        username: "{{ ansible_user }}"
+        path: "system ntp client"
+        data:
+          - enabled: yes
+            servers: 82.146.42.44, 93.191.12.44
+      when: ansible_facts["net_version"] is version('7.0', '>=')
+
+    - name: Get ntp client settings
+      community.routeros.api_info:
+        hostname: "{{ inventory_hostname }}"
+        password: "{{ ansible_password }}"
+        username: "{{ ansible_user }}"
+        path: "system ntp client"
+      register: ntp_client
+
+    - name: Print data
+      ansible.builtin.debug:
+        var: ntp_client

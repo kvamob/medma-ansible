@@ -1,0 +1,95 @@
+- name: Upload file to router
+  hosts: 
+#    - CAPsMANs
+#    - 10.196.0.236
+#    - switches1
+    - WiFi1
+  gather_facts: false
+
+  tasks:
+    - name: Сохранить содержимое локальных файлов в переменные
+      ansible.builtin.set_fact:
+        UpdateRouterOS_src:   "{{ lookup('file', './files/UpdateRouterOS.txt') }}"
+        Upgrade_Firmware_src: "{{ lookup('file', './files/UpgradeFirmware.txt') }}"
+
+#    - name: file UpdateRouterOS.txt upload
+#      net_put:
+#        src: ./files/UpdateRouterOS.txt
+#        dest: ./UpdateRouterOS.txt
+#        protocol: sftp
+#    - name: file UpgradeFirmware.txt upload
+#      net_put:
+#        src: ./files/UpgradeFirmware.txt
+#        dest: ./UpgradeFirmware.txt
+#        protocol: sftp
+
+#    - name: file UpgradeAllowed upload
+#      net_put:
+#        src: ./files/UpgradeAllowed
+#        dest: ./UpgradeAllowed
+#        protocol: sftp
+
+#    - name: Get system script
+#      community.routeros.api_info:
+#        hostname: "{{ inventory_hostname }}"
+#        password: "{{ ansible_password }}"
+#        username: "{{ ansible_user }}"
+#        path: "system script"
+#      register: system_script
+
+#    - name: Print data
+#      ansible.builtin.debug:
+#        var: system_script
+
+#    - name: Get system scheduler
+#      community.routeros.api_info:
+#        hostname: "{{ inventory_hostname }}"
+#        password: "{{ ansible_password }}"
+#        username: "{{ ansible_user }}"
+#        path: "system scheduler"
+#      register: system_sheduler
+
+#    - name: Print data
+#      ansible.builtin.debug:
+#        var: system_sheduler
+
+    - name: Create scripts
+      community.routeros.api_modify:
+        hostname: "{{ inventory_hostname }}"
+        password: "{{ ansible_password }}"
+        username: "{{ ansible_user }}"
+        timeout: 60
+        path: "system script"
+        data:
+          - name: "UpdateRouterOS"
+            source: "{{ UpdateRouterOS_src }}"
+          - name: "UpgradeFirmware"
+            source: "{{ Upgrade_Firmware_src }}"
+
+    - name: Create sheduler tasks
+      community.routeros.api_modify:
+        hostname: "{{ inventory_hostname }}"
+        password: "{{ ansible_password }}"
+        username: "{{ ansible_user }}"
+        timeout: 60
+        path: "system scheduler"
+        data:
+          - name: "daily_UpdateRouterOS"
+            interval: "1d"
+            on-event: "UpdateRouterOS"
+            start-time: "03:00:00"
+          - name: "daily_UpgradeFirmware"
+            interval: "1d"
+            on-event: "UpgradeFirmware"
+            start-time: "03:20:00"
+
+#    - name: Create scripts
+#      routeros_command:
+#        commands: 
+#          - /system script add name=UpdateRouterOS source=[/file get UpdateRouterOS.txt contents]
+#          - /system script add name=UpgradeFirmware source=[/file get UpgradeFirmware.txt contents]
+#    - name: Create tasks in Scheduler
+#      routeros_command:
+#        commands: 
+#          - /system scheduler add name="daily_UpdateRouterOS"  start-time=03:00:00 interval=1d on-event="UpdateRouterOS"
+#          - /system scheduler add name="daily_UpgradeFirmware" start-time=03:30:00 interval=1d on-event="UpgradeFirmware"

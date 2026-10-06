@@ -1,0 +1,21 @@
+- name: Upload file to router
+  hosts: 
+#    - CAPsMANs
+#    - 10.196.0.236
+#    - 10.2.0.11
+#    - switches1
+    - WiFi1
+  gather_facts: false
+
+  tasks:
+
+    - name: Переименовать скрипт
+      community.routeros.api_find_and_modify:
+        hostname: "{{ inventory_hostname }}"
+        password: "{{ ansible_password }}"
+        username: "{{ ansible_user }}"
+        path: "system script"
+        find:
+          name: "Upgrade_Firmware"
+        values:
+          name: "UpgradeFirmware"

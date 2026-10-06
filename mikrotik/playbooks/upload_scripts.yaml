@@ -1,8 +1,23 @@
 - name: Upload file to router
   hosts: 
 #    - CAPsMANs
-    - 10.196.105.253
+#    - 10.66.5.10
+#    - switches1
+#    - switches2
+#    - 10.196.0.236
+    - 10.61.0.13
+    - 10.61.0.14
+    - 10.66.0.8
+    - 10.66.0.12
+    - 10.66.0.23
+    - 10.66.0.26
+    - 10.66.0.27
+    - 10.66.0.29
+
   gather_facts: false
+  vars:
+    script1: "/file print;
+             /system clock print;"
   tasks:
     - name: file UpdateRouterOS.txt upload
       net_put:
@@ -19,11 +34,16 @@
         src: ./files/UpgradeAllowed
         dest: ./UpgradeAllowed
         protocol: sftp
+    - name: Adjust system clock
+      routeros_command:
+        commands: 
+          - /system ntp client set enabled=yes primary-ntp=82.146.42.44 secondary-ntp=93.191.12.44
     - name: Create scripts
       routeros_command:
         commands: 
           - /system script add name=UpdateRouterOS source=[/file get UpdateRouterOS.txt contents]
           - /system script add name=UpgradeFirmware source=[/file get UpgradeFirmware.txt contents]
+#          - /system script add name=UpgradeFirmware_tst source="{{ script1 }}"
     - name: Create tasks in Scheduler
       routeros_command:
         commands: 
