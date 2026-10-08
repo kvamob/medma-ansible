@@ -3,7 +3,9 @@
 #    - CAPsMANs
 #    - 10.196.0.236
 #    - switches1
-    - WiFi1
+#    - WiFi1
+#    - WiFi2
+    - WiFi3
   gather_facts: false
 
   tasks:

@@ -1,1 +1,0 @@
-/system ntp client set enabled=yes primary-ntp=82.146.42.44 secondary-ntp=93.191.12.44

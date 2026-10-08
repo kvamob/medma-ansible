@@ -1,0 +1,22 @@
+###############################################################################################
+# Uses collection david_igou.routeros_configuration
+# Installing: ansible-galaxy collection install david_igou.routeros_configuration:0.0.1-alpha
+###############################################################################################
+
+- name: Make backup configuration and download it from MikroTik devices
+  hosts:
+     - 10.196.105.253
+     - 10.70.0.3
+  gather_facts: false
+
+  tasks:
+
+    - name: Fetch backup file from RouterOS to Ansible controller
+      ansible.netcommon.net_get:
+        src: "curr_backup.backup"
+        dest: "./backups/{{ inventory_hostname }}_curr.backup"
+
+    - name: Fetch config file from RouterOS to Ansible controller
+      ansible.netcommon.net_get:
+        src: "curr_config.rsc"
+        dest: "./backups/{{ inventory_hostname }}_curr.config"

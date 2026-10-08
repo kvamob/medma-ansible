@@ -3,9 +3,10 @@
 #    - routers1
 #    - routers2
 #    - CAPsMANs
-    - switches1
-    - switches2
-#    - 10.50.4.1
+#    - switches1
+#    - switches2
+    - WiFi1
+    - WiFi2
   gather_facts: false
   vars:
     logfile: "/tmp/mikrotiks_log"

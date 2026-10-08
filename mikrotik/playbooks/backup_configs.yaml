@@ -1,0 +1,62 @@
+###############################################################################################
+# Uses collection david_igou.routeros_configuration
+# Installing: ansible-galaxy collection install david_igou.routeros_configuration:0.0.1-alpha
+###############################################################################################
+
+- name: Create a backup of the MikroTik devices configuration and download it
+  hosts:
+#    - 10.48.0.1
+     - CAPsMANs
+#    - 10.70.0.3
+     - routers1
+     - routers2
+  gather_facts: false
+
+  tasks:
+
+    - name: Gather facts
+      community.routeros.api_facts:
+        hostname: "{{ inventory_hostname }}"
+        password: "{{ ansible_password }}"
+        username: "{{ ansible_user }}"
+        timeout: 60
+        gather_subset:
+          - default
+
+    - name: Create binary backup file on MikroTik device
+      community.routeros.api:
+        hostname: "{{ inventory_hostname }}"
+        password: "{{ ansible_password }}"
+        username: "{{ ansible_user }}"
+        path: "system backup"
+        cmd: "save name=curr_backup"
+
+    - name: Fetch backup file from RouterOS to Ansible controller
+      ansible.netcommon.net_get:
+        src: "curr_backup.backup"
+        dest: "./backups/{{ inventory_hostname }}_curr.backup"
+
+#    - name: Export config to file on MikroTik device
+#      community.routeros.api:
+#        hostname: "{{ inventory_hostname }}"
+#        password: "{{ ansible_password }}"
+#        username: "{{ ansible_user }}"
+#        path: "export"
+#        cmd: "file=curr_config"
+
+    - name: Create text config files on MikroTik device (RouterOS 7.x)
+      community.routeros.command:
+        commands:
+          - /export show-sensitive file=curr_config
+      when: ansible_facts["net_version"] is version('7.0', '>=')
+
+    - name: Create text config files on MikroTik device (RouterOS 6.x)
+      community.routeros.command:
+        commands:
+          - /export file=curr_config
+      when: ansible_facts["net_version"] is version('7.0', '<')
+
+    - name: Fetch config file from RouterOS to Ansible controller
+      ansible.netcommon.net_get:
+        src: "curr_config.rsc"
+        dest: "./backups/{{ inventory_hostname }}_curr_config.rsc"

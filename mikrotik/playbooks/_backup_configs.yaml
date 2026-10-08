@@ -1,0 +1,23 @@
+###################################################################################################################
+# Uses collection david_igou.routeros_configuration
+# https://galaxy.ansible.com/ui/repo/published/david_igou/routeros_configuration/?version=0.0.1-alpha
+# Installing: ansible-galaxy collection install david_igou.routeros_configuration
+# Installing from tarball: ansible-galaxy collection install /путь/к/файлу/namespace-collection_name-1.0.0.tar.gz
+###################################################################################################################
+
+- name: Download files from MikroTik RouterOS
+  hosts:
+#    - 10.48.0.1
+#    - CAPsMANs
+    - 10.70.0.3
+  gather_facts: false
+  tasks:
+
+  roles:
+    - role: david_igou.routeros_configuration.backup
+      vars:
+        routeros_backup_dir: ./backups/
+        routeros_backup_binary: true
+#        routeros_backup_password: "{{ vault_backup_password }}"
+        routeros_backup_show_sensitive: true
+        routeros_backup_name: "{{ inventory_hostname }}"
