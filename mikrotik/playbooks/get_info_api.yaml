@@ -1,11 +1,11 @@
 - name: Write kernel version to file
   hosts:
-#    - routers1
+    - routers1
 #    - routers2
 #    - CAPsMANs
 #    - switches1
 #    - switches2
-    - all
+#    - all
 #    - WiFi1
 #    - WiFi2
 #    - WiFi3
